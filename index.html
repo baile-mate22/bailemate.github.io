@@ -540,7 +540,15 @@
 
     <div class="cta-form" id="lista">
       <input type="email" id="email1" placeholder="Tu correo electrónico" />
-      <button class="cta-btn" onclick="subscribe('email1', 'msg1')">Quiero mi Mate →</button>
+      <select id="ref1" style="padding:0.75rem 1rem; border-radius:12px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.07); color:#ccc; font-size:0.9rem; width:100%; margin-top:0.5rem;">
+        <option value="">¿Cómo nos has conocido?</option>
+        <option value="amigo">Un amigo del baile</option>
+        <option value="instagram">Instagram</option>
+        <option value="facebook">Facebook</option>
+        <option value="google">Google</option>
+        <option value="otro">Otro</option>
+      </select>
+      <button class="cta-btn" onclick="subscribe('email1', 'msg1', 'ref1')">Quiero mi Mate →</button>
     </div>
     <p class="success-msg" id="msg1">🎉 ¡Apuntada! Te avisamos cuando lancemos.</p>
     <p class="form-note">Sé la primera en conocer el lanzamiento. Sin spam, prometido.</p>
@@ -622,7 +630,15 @@
     <div class="cta-form-center">
       <div class="cta-form">
         <input type="email" id="email2" placeholder="Tu correo electrónico" />
-        <button class="cta-btn" onclick="subscribe('email2', 'msg2')">Quiero ser la primera →</button>
+        <select id="ref2" style="padding:0.75rem 1rem; border-radius:12px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.07); color:#ccc; font-size:0.9rem; width:100%; margin-top:0.5rem;">
+          <option value="">¿Cómo nos has conocido?</option>
+          <option value="amigo">Un amigo del baile</option>
+          <option value="instagram">Instagram</option>
+          <option value="facebook">Facebook</option>
+          <option value="google">Google</option>
+          <option value="otro">Otro</option>
+        </select>
+        <button class="cta-btn" onclick="subscribe('email2', 'msg2', 'ref2')">Quiero ser la primera →</button>
       </div>
     </div>
     <p class="success-msg" id="msg2" style="display:none;">🎉 ¡Apuntada! Te avisamos cuando lancemos.</p>
@@ -663,6 +679,14 @@
         <div style="display:flex; justify-content:center;">
           <div class="cta-form" style="max-width:440px; width:100%;">
             <input type="email" id="email3" placeholder="Tu correo — me apunto como Mate" />
+            <select id="ref3" style="padding:0.75rem 1rem; border-radius:12px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.07); color:#ccc; font-size:0.9rem; width:100%; margin-top:0.5rem;">
+              <option value="">¿Cómo nos has conocido?</option>
+              <option value="amigo">Un amigo del baile</option>
+              <option value="instagram">Instagram</option>
+              <option value="facebook">Facebook</option>
+              <option value="google">Google</option>
+              <option value="otro">Otro</option>
+            </select>
             <button class="cta-btn" style="background:linear-gradient(135deg,var(--dorado),var(--naranja)); color:var(--noche); font-weight:700;" onclick="subscribeMate()">Quiero ser Mate →</button>
           </div>
         </div>
@@ -677,11 +701,11 @@
 
   <!-- FOOTER -->
   <footer>
-    <p><strong>BaileMate</strong> · bailemate.com · hola@bailemate.com</p>
+    <p><strong>BaileMate</strong> · bailemate.com · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="30585f5c51705251595c555d5144551e535f5d">[email&#160;protected]</a></p>
     <p style="margin-top:0.5rem; font-size:0.72rem;">© 2026 BaileMate. Todos los derechos reservados. Próximamente.</p>
   </footer>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     function subscribeMate() {
       const input = document.getElementById('email3');
       const msg = document.getElementById('msg3');
@@ -702,8 +726,4 @@
       const email = input.value.trim();
 
       if (!email || !email.includes('@')) {
-        input.style.boxShadow = '0 0 0 2px rgba(255,107,53,0.6)';
-        input.placeholder = 'Introduce un correo válido';
-        setTimeout(() => {
-          input.style.boxShadow = '';
-          input.placeholder = 'Tu correo e
+   
