@@ -1,5 +1,4 @@
-
-   <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -235,25 +234,6 @@
       transform: translateX(2px);
     }
 
-    .cta-form select {
-      background-color: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 50px;
-      padding: 0.85rem 1.4rem;
-      color: var(--blanco);
-      font-size: 0.9rem;
-      font-family: inherit;
-      width: 100%;
-      margin-top: 0.6rem;
-      cursor: pointer;
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23aaa' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 1.2rem center;
-      background-size: 12px;
-    }
-    .cta-form select option { background: #1a1a2e; color: var(--blanco); }
-    .cta-form select:focus { outline: none; border-color: var(--naranja); }
     .form-note {
       font-size: 0.75rem;
       color: var(--gris);
@@ -560,15 +540,7 @@
 
     <div class="cta-form" id="lista">
       <input type="email" id="email1" placeholder="Tu correo electrónico" />
-      <select id="ref1">
-        <option value="" disabled selected>¿Cómo nos has conocido?</option>
-        <option value="amigo">Me lo ha contado un amigo/a del baile</option>
-        <option value="instagram">Lo he visto en Instagram</option>
-        <option value="facebook">Lo he visto en Facebook</option>
-        <option value="google">Lo he encontrado en Google</option>
-        <option value="otro">Otro</option>
-      </select>
-      <button class="cta-btn" onclick="subscribe('email1', 'msg1', 'ref1')">Quiero mi Mate →</button>
+      <button class="cta-btn" onclick="subscribe('email1', 'msg1')">Quiero mi Mate →</button>
     </div>
     <p class="success-msg" id="msg1">🎉 ¡Apuntada! Te avisamos cuando lancemos.</p>
     <p class="form-note">Sé la primera en conocer el lanzamiento. Sin spam, prometido.</p>
@@ -650,15 +622,7 @@
     <div class="cta-form-center">
       <div class="cta-form">
         <input type="email" id="email2" placeholder="Tu correo electrónico" />
-        <select id="ref2">
-          <option value="" disabled selected>¿Cómo nos has conocido?</option>
-          <option value="amigo">Me lo ha contado un amigo/a del baile</option>
-          <option value="instagram">Lo he visto en Instagram</option>
-          <option value="facebook">Lo he visto en Facebook</option>
-          <option value="google">Lo he encontrado en Google</option>
-          <option value="otro">Otro</option>
-        </select>
-        <button class="cta-btn" onclick="subscribe('email2', 'msg2', 'ref2')">Quiero ser la primera →</button>
+        <button class="cta-btn" onclick="subscribe('email2', 'msg2')">Quiero ser la primera →</button>
       </div>
     </div>
     <p class="success-msg" id="msg2" style="display:none;">🎉 ¡Apuntada! Te avisamos cuando lancemos.</p>
@@ -699,14 +663,6 @@
         <div style="display:flex; justify-content:center;">
           <div class="cta-form" style="max-width:440px; width:100%;">
             <input type="email" id="email3" placeholder="Tu correo — me apunto como Mate" />
-            <select id="ref3">
-              <option value="" disabled selected>¿Cómo nos has conocido?</option>
-              <option value="amigo">Me lo ha contado un amigo/a del baile</option>
-              <option value="instagram">Lo he visto en Instagram</option>
-              <option value="facebook">Lo he visto en Facebook</option>
-              <option value="google">Lo he encontrado en Google</option>
-              <option value="otro">Otro</option>
-            </select>
             <button class="cta-btn" style="background:linear-gradient(135deg,var(--dorado),var(--naranja)); color:var(--noche); font-weight:700;" onclick="subscribeMate()">Quiero ser Mate →</button>
           </div>
         </div>
@@ -721,7 +677,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <p><strong>BaileMate</strong> · bailemate.com · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="462e292a270624272f2a232b2732236825292b">[email&#160;protected]</a></p>
+    <p><strong>BaileMate</strong> · bailemate.com · hola@bailemate.com</p>
     <p style="margin-top:0.5rem; font-size:0.72rem;">© 2026 BaileMate. Todos los derechos reservados. Próximamente.</p>
   </footer>
 
@@ -729,42 +685,25 @@
     function subscribeMate() {
       const input = document.getElementById('email3');
       const msg = document.getElementById('msg3');
-      const ref = document.getElementById('ref3');
       const email = input.value.trim();
-      const referral = ref ? ref.value : '';
       if (!email || !email.includes('@')) {
         input.style.boxShadow = '0 0 0 2px rgba(255,215,0,0.6)';
         input.placeholder = 'Introduce un correo válido';
         setTimeout(() => { input.style.boxShadow = ''; input.placeholder = 'Tu correo — me apunto como Mate'; }, 2000);
         return;
       }
-
       input.parentElement.style.opacity = '0.5';
       msg.style.display = 'block';
       msg.style.animation = 'fadeUp 0.5s ease both';
     }
-    function subscribe(inputId, msgId, refId) {
+    function subscribe(inputId, msgId) {
       const input = document.getElementById(inputId);
       const msg = document.getElementById(msgId);
-      const ref = refId ? document.getElementById(refId) : null;
       const email = input.value.trim();
-      const referral = ref ? ref.value : '';
 
       if (!email || !email.includes('@')) {
         input.style.boxShadow = '0 0 0 2px rgba(255,107,53,0.6)';
         input.placeholder = 'Introduce un correo válido';
         setTimeout(() => {
           input.style.boxShadow = '';
-          input.placeholder = 'Tu correo electrónico';
-        }, 2000);
-        return;
-      }
-
-      msg.style.display = 'block';
-      msg.style.animation = 'fadeUp 0.5s ease both';
-      input.value = '';
-    }
-  </script>
-</body>
-</html>
-  
+          input.placeholder = 'Tu correo e
