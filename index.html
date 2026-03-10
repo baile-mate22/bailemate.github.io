@@ -548,7 +548,7 @@
         <option value="google">Google</option>
         <option value="otro">Otro</option>
       </select>
-      <button class="cta-btn" onclick="subscribe('email1', 'msg1', 'ref1')">Quiero mi Mate →</button>
+      <button class="cta-btn" onclick="enviarRegistro('email1', 'ref1', 'msg1', 'bailarina')">Quiero mi Mate →</button>
     </div>
     <p class="success-msg" id="msg1">🎉 ¡Apuntada! Te avisamos cuando lancemos.</p>
     <p class="form-note">Sé la primera en conocer el lanzamiento. Sin spam, prometido.</p>
@@ -638,7 +638,7 @@
           <option value="google">Google</option>
           <option value="otro">Otro</option>
         </select>
-        <button class="cta-btn" onclick="subscribe('email2', 'msg2', 'ref2')">Quiero ser la primera →</button>
+        <button class="cta-btn" onclick="enviarRegistro('email2', 'ref2', 'msg2', 'bailarina')">Quiero ser la primera →</button>
       </div>
     </div>
     <p class="success-msg" id="msg2" style="display:none;">🎉 ¡Apuntada! Te avisamos cuando lancemos.</p>
@@ -687,7 +687,7 @@
               <option value="google">Google</option>
               <option value="otro">Otro</option>
             </select>
-            <button class="cta-btn" style="background:linear-gradient(135deg,var(--dorado),var(--naranja)); color:var(--noche); font-weight:700;" onclick="subscribeMate()">Quiero ser Mate →</button>
+            <button class="cta-btn" style="background:linear-gradient(135deg,var(--dorado),var(--naranja)); color:var(--noche); font-weight:700;" onclick="enviarRegistro('email3', 'ref3', 'msg3', 'mate')">Quiero ser Mate →</button>
           </div>
         </div>
         <p class="success-msg" id="msg3" style="display:none; color:var(--dorado);">🌟 ¡Perfecto! Eres de los primeros Mates. Te contactamos pronto.</p>
@@ -705,25 +705,122 @@
     <p style="margin-top:0.5rem; font-size:0.72rem;">© 2026 BaileMate. Todos los derechos reservados. Próximamente.</p>
   </footer>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-    function subscribeMate() {
-      const input = document.getElementById('email3');
-      const msg = document.getElementById('msg3');
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  <script>
+    // Configuración - ¡REEMPLAZA CON TU URL DE APPS SCRIPT!
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzBddDuoArpVMVJICegC32TaRA7VGLeTVJ3peqSPiv2bUjxI-ywJj9YsL1VTDNFQ6a6/exec';
+
+    // Función principal para enviar registros
+    async function enviarRegistro(emailId, refId, msgId, tipo) {
+      const input = document.getElementById(emailId);
+      const msg = document.getElementById(msgId);
+      const ref = document.getElementById(refId);
       const email = input.value.trim();
+      const referral = ref ? ref.value : '';
+
+      // Validar email
       if (!email || !email.includes('@')) {
-        input.style.boxShadow = '0 0 0 2px rgba(255,215,0,0.6)';
+        input.style.boxShadow = '0 0 0 2px rgba(255,107,53,0.6)';
+        const originalPlaceholder = input.placeholder;
         input.placeholder = 'Introduce un correo válido';
-        setTimeout(() => { input.style.boxShadow = ''; input.placeholder = 'Tu correo — me apunto como Mate'; }, 2000);
+        setTimeout(() => {
+          input.style.boxShadow = '';
+          input.placeholder = originalPlaceholder;
+        }, 2000);
         return;
       }
-      input.parentElement.style.opacity = '0.5';
-      msg.style.display = 'block';
-      msg.style.animation = 'fadeUp 0.5s ease both';
-    }
-    function subscribe(inputId, msgId) {
-      const input = document.getElementById(inputId);
-      const msg = document.getElementById(msgId);
-      const email = input.value.trim();
+      // Validar que han seleccionado una opción de referencia
+      if (!referral) {
+        ref.style.boxShadow = '0 0 0 2px rgba(255,107,53,0.6)';
+        setTimeout(() => {
+          ref.style.boxShadow = '';
+        }, 2000);
+        return;
+      }
 
-      if (!email || !email.includes('@')) {
-   
+      // Deshabilitar el botón y mostrar loading
+      const button = event.target;
+      const originalText = button.innerHTML;
+      button.disabled = true;
+      button.innerHTML = 'Enviando <span class="loading-spinner"></span>';
+
+      try {
+        // Preparar datos para enviar
+        const formData = new URLSearchParams();
+        formData.append('email', email);
+        formData.append('referral', referral);
+        formData.append('tipo', tipo);
+
+        // Enviar a Apps Script
+        const response = await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors', // Importante para Apps Script
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: formData.toString()
+        });
+
+        // Mostrar mensaje de éxito
+        msg.style.display = 'block';
+        msg.style.animation = 'fadeUp 0.5s ease both';
+
+        // Limpiar el formulario
+        input.value = '';
+        ref.value = '';
+
+        // Guardar en localStorage para no mostrar el formulario de nuevo (opcional)
+        const registros = JSON.parse(localStorage.getItem('bailemate_registros') || '[]');
+        registros.push({ email, tipo, fecha: new Date().toISOString() });
+        localStorage.setItem('bailemate_registros', JSON.stringify(registros));
+
+      } catch (error) {
+        console.error('Error al enviar:', error);
+        // Mostrar mensaje de error amigable
+        alert('Hubo un problema al enviar tu registro. Por favor, inténtalo de nuevo más tarde.');
+      } finally {
+        // Restaurar el botón
+        button.disabled = false;
+        button.innerHTML = originalText;
+      }
+    }
+    // Función para validar email en tiempo real (opcional)
+    function validarEmailEnTiempo(inputId) {
+      const input = document.getElementById(inputId);
+      input.addEventListener('input', function() {
+        if (this.value.includes('@') && this.value.includes('.')) {
+          this.style.boxShadow = '0 0 0 2px rgba(255,215,0,0.3)';
+        } else {
+          this.style.boxShadow = '';
+        }
+      });
+    }
+
+    // Inicializar validaciones cuando cargue la página
+    document.addEventListener('DOMContentLoaded', function() {
+      validarEmailEnTiempo('email1');
+      validarEmailEnTiempo('email2');
+      validarEmailEnTiempo('email3');
+
+      // Verificar si ya se registraron antes (opcional)
+      const registros = JSON.parse(localStorage.getItem('bailemate_registros') || '[]');
+      if (registros.length > 0) {
+        console.log('Registros anteriores encontrados:', registros.length);
+        // Aquí podrías ocultar algunos formularios si ya se registraron
+      }
+    });
+
+    // Función para obtener estadísticas (opcional - solo para administración)
+    async function obtenerEstadisticas() {
+      try {
+        const response = await fetch(APPS_SCRIPT_URL + '?action=stats');
+        const data = await response.json();
+        console.log('Estadísticas:', data);
+        return data;
+      } catch (error) {
+        console.error('Error al obtener estadísticas:', error);
+      }
+    }
+  </script>
+</body>
+</html>
